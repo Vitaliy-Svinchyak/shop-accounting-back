@@ -4,6 +4,7 @@ namespace Application\Controller;
 
 use Application\Service\AuthManager;
 use Zend\Http\Response;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class AuthController extends ProjectRestfulController
 {
@@ -12,8 +13,9 @@ class AuthController extends ProjectRestfulController
      */
     private $authManager;
 
-    public function __construct(AuthManager $authManager)
+    public function __construct(ServiceLocatorInterface $serviceLocator, AuthManager $authManager)
     {
+        parent::__construct($serviceLocator);
         $this->authManager = $authManager;
     }
 

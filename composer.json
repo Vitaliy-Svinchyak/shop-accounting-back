@@ -19,7 +19,10 @@
         "doctrine/doctrine-orm-module": "^1.1",
         "zfcampus/zf-rest": "~1.0-dev",
         "zendframework/zend-console": "^2.6",
-        "zfr/zfr-cors": "1.*"
+        "zfr/zfr-cors": "1.*",
+        "http-interop/http-middleware": "^0.4.1",
+        "zendframework/zend-psr7bridge": "^1.0",
+        "zendframework/zend-stratigility": "^2.0"
     },
     "autoload": {
         "psr-4": {

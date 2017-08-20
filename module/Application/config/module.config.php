@@ -1,12 +1,9 @@
 <?php
-/**
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- */
 
 namespace Application;
 
+use Application\Factory\ServiceManagerControllerFactory;
+use Application\Middleware\AuthMiddleware;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
@@ -18,15 +15,15 @@ return [
             'home' => [
                 'type' => Literal::class,
                 'options' => [
-                    'route'    => '/',
+                    'route' => '/',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
+                        'action' => 'index',
                     ],
                 ],
             ],
-            'application' => [
-                'type'    => Segment::class,
+            'auth' => [
+                'type' => Segment::class,
                 'options' => [
                     'route' => '/user/auth',
                     'defaults' => [
@@ -34,25 +31,35 @@ return [
                     ],
                 ],
             ],
+            'shop' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/shop',
+                    'defaults' => [
+                        'controller' => Controller\ShopController::class
+                    ],
+                ],
+            ]
         ],
     ],
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => Factory\IndexControllerFactory::class,
             Controller\AuthController::class => ReflectionBasedAbstractFactory::class,
+            Controller\ShopController::class => ServiceManagerControllerFactory::class,
         ],
     ],
     'view_manager' => [
         'display_not_found_reason' => true,
-        'display_exceptions'       => true,
-        'doctype'                  => 'HTML5',
-        'not_found_template'       => 'error/404',
-        'exception_template'       => 'error/index',
+        'display_exceptions' => true,
+        'doctype' => 'HTML5',
+        'not_found_template' => 'error/404',
+        'exception_template' => 'error/index',
         'template_map' => [
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
+            'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
-            'error/404'               => __DIR__ . '/../view/error/404.phtml',
-            'error/index'             => __DIR__ . '/../view/error/index.phtml',
+            'error/404' => __DIR__ . '/../view/error/404.phtml',
+            'error/index' => __DIR__ . '/../view/error/index.phtml',
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',

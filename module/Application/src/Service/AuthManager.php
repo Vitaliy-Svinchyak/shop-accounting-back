@@ -2,7 +2,9 @@
 
 namespace Application\Service;
 
+use Application\Entity\User;
 use Application\Entity\UserAuth;
+use Doctrine\ORM\EntityManager;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Result;
 
@@ -12,9 +14,12 @@ class AuthManager
 
     private $token;
 
-    public function __construct(AuthenticationService $authenticationService)
+    private $user;
+
+    public function __construct(AuthenticationService $authenticationService, EntityManager $entityManager)
     {
         $this->authService = $authenticationService;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -42,5 +47,34 @@ class AuthManager
         }
 
         return false;
+    }
+
+    /**
+     * @param string $token
+     *
+     * @return bool
+     */
+    public function authorizeByToken(string $token): bool
+    {
+        $userAuthRepo= $this->entityManager->getRepository(UserAuth::class);
+
+        /** @var UserAuth $userAuth */
+        $userAuth = $userAuthRepo->findOneBy(['hash' => $token]);
+        return true;
+        if ($userAuth) {
+//            $this->user = $userAuth->getUser();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }
