@@ -26,7 +26,7 @@ class UserAuth
 
     /**
      * @var string
-     * @ORM\Column(name="hash", type="string", length=50, nullable=false)
+     * @ORM\Column(name="hash", type="string", length=100, nullable=false)
      */
     private $hash = '';
 

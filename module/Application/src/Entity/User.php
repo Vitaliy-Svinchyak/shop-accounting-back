@@ -37,7 +37,7 @@ class User
     private $email = '';
 
     /**
-     * @ORM\Column(name="password", type="string", length=50, nullable=false)
+     * @ORM\Column(name="password", type="string", length=60, nullable=false)
      */
     private $password = '';
 

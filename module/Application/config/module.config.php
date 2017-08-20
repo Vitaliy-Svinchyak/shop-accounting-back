@@ -9,8 +9,10 @@ namespace Application;
 
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
+use Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 
 return [
+    'service_manager' => include __DIR__ . '/services.config.php',
     'router' => [
         'routes' => [
             'home' => [
@@ -26,10 +28,9 @@ return [
             'application' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/application[/:action]',
+                    'route' => '/user/auth',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
+                        'controller' => Controller\AuthController::class
                     ],
                 ],
             ],
@@ -38,6 +39,7 @@ return [
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => Factory\IndexControllerFactory::class,
+            Controller\AuthController::class => ReflectionBasedAbstractFactory::class,
         ],
     ],
     'view_manager' => [
