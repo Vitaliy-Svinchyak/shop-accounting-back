@@ -233,5 +233,5 @@ Run ORM commands:
                             orm:clear-cache:query
                             orm:generate-proxies
                             orm:schema-tool:create
-                            orm:schema-tool:create --force
+                            orm:schema-tool:create
                             orm:schema-tool:update --force
