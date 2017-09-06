@@ -60,9 +60,9 @@ class AuthManager
 
         /** @var UserAuth $userAuth */
         $userAuth = $userAuthRepo->findOneBy(['hash' => $token]);
-        return true;
+
         if ($userAuth) {
-//            $this->user = $userAuth->getUser();
+            $this->user = $userAuth->getUser();
 
             return true;
         }

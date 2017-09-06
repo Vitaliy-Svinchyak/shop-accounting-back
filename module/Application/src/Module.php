@@ -54,10 +54,12 @@ class Module
         // Get the instance of AuthManager service.
         /** @var AuthManager $authManager */
         $authManager = $event->getApplication()->getServiceManager()->get(AuthManager::class);
+        /** @var Request $request */
+        $request = $event->getRequest();
 
         // Execute the access filter on every controller except AuthController
         // (to avoid infinite redirect).
-        if ($controllerName !== AuthController::class) {
+        if ($controllerName !== AuthController::class && !$request->isOptions()) {
             $errorResponse = new Response();
             $errorResponse->setStatusCode(Response::STATUS_CODE_401);
 

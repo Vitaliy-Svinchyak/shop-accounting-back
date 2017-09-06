@@ -2,13 +2,16 @@
 
 namespace Application\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\ShopRepository")
  * @ORM\Table(name="shop")
  */
-class Shop
+class Shop implements JsonSerializable
 {
     /**
      * @ORM\Id
@@ -31,7 +34,7 @@ class Shop
 
 
     /**
-     * @var User[]
+     * @var User[]|Collection
      * @ORM\ManyToMany(targetEntity="Application\Entity\User", inversedBy="shop", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="user_to_shop",
@@ -44,6 +47,11 @@ class Shop
      * )
      */
     private $users;
+
+    public function __construct()
+    {
+        $this->initDefaultParams();
+    }
 
     /**
      * @return mixed
@@ -64,7 +72,7 @@ class Shop
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -80,7 +88,7 @@ class Shop
     /**
      * @return string
      */
-    public function getLogo()
+    public function getLogo(): string
     {
         return $this->logo;
     }
@@ -108,4 +116,45 @@ class Shop
     {
         $this->users = $users;
     }
+
+    /**
+     * @param User $user
+     */
+    public function addUser(User $user)
+    {
+        if (!$this->hasUser($user)) {
+            $this->users[] = $user;
+        }
+    }
+
+    /**
+     * @param User $user
+     */
+    public function removeUser(User $user)
+    {
+        if ($this->hasUser($user)) {
+            $this->users->removeElement($user);
+        }
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function hasUser(User $user): bool
+    {
+        return $this->getUsers()->contains($user);
+    }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
+
+    private function initDefaultParams()
+    {
+        $this->users = new ArrayCollection();
+    }
+
+
 }

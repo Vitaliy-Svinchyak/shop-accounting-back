@@ -2,10 +2,13 @@
 
 namespace Application\Controller;
 
+use Traversable;
 use Zend\Http\Response;
+use Zend\Json\Json;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceManager;
+use Zend\Stdlib\ArrayUtils;
 
 class ProjectRestfulController extends AbstractRestfulController
 {
@@ -24,12 +27,16 @@ class ProjectRestfulController extends AbstractRestfulController
         return $this->successResponse();
     }
 
-    public function successResponse($content = null): Response
+    public function successResponse($result = null): Response
     {
+        $answer = [
+            'result' => $result
+        ];
+
         /** @var Response $response */
         $response = $this->response;
         $response->setStatusCode(Response::STATUS_CODE_200);
-        $response->setContent(json_encode($content));
+        $response->setContent(json_encode($answer));
         $headers = $response->getHeaders();
         $headers->addHeaderLine('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
         $headers->addHeaderLine('Access-Control-Allow-Credentials', 'true');

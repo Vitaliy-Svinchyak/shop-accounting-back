@@ -2,6 +2,7 @@
 
 namespace Application\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -53,10 +54,15 @@ class User
     private $auth;
 
     /**
-     * @var User[]
+     * @var Shop[]
      * @ORM\ManyToMany(targetEntity="Application\Entity\Shop", mappedBy="users", cascade={"persist"})
      */
     private $shops;
+
+    public function __construct()
+    {
+        $this->initDefaultParams();
+    }
 
     /**
      * @return mixed
@@ -171,7 +177,7 @@ class User
     }
 
     /**
-     * @return User[]
+     * @return ArrayCollection<Shop>
      */
     public function getShops()
     {
@@ -184,6 +190,11 @@ class User
     public function setShops($shops)
     {
         $this->shops = $shops;
+    }
+
+    private function initDefaultParams()
+    {
+        $this->shops = new ArrayCollection();
     }
 
 }

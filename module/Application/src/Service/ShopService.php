@@ -3,11 +3,12 @@
 namespace Application\Service;
 
 use Application\Entity\Shop;
+use Application\Entity\User;
 use Application\Form\ShopForm;
 use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
-use Zend\Hydrator\ArraySerializable;
 use Zend\ServiceManager\ServiceManager;
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 
 class ShopService
 {
@@ -29,15 +30,35 @@ class ShopService
         if (!$form->isValid()) {
             return false;
         }
-
-        $hydrator = new ArraySerializable();
+        $em = $this->getEntityManager();
+        $hydrator = new DoctrineHydrator($em);
         $shop = new Shop();
         $hydrator->hydrate($data, $shop);
-        $em = $this->getEntityManager();
-//        $em->persist($shop);
-//        $em->flush($shop);
+        $shop->addUser(
+            $this->getServiceLocator()
+                ->get(AuthManager::class)
+                ->getUser()
+        );
+
+        $em->persist($shop);
+        $em->flush($shop);
 
         return true;
+    }
+
+    /**
+     * @return Shop[]
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
+     */
+    public function getShopsByOfCurrentUser()
+    {
+        /** @var User $user */
+        $user = $this->getServiceLocator()
+            ->get(AuthManager::class)
+            ->getUser();
+
+        return $user->getShops()->toArray();
     }
 
     /**

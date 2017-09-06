@@ -12,6 +12,15 @@ class ShopController extends ProjectRestfulController
         $service = $this->getServiceLocator()->get(ShopService::class);
         $result = $service->createShop($data);
 
-        return $this->successResponse(['result' => $result]);
+        return $this->successResponse($result);
+    }
+
+    public function getList()
+    {
+        /** @var ShopService $service */
+        $service = $this->getServiceLocator()->get(ShopService::class);
+        $result = $service->getShopsByOfCurrentUser();
+
+        return $this->successResponse($result);
     }
 }

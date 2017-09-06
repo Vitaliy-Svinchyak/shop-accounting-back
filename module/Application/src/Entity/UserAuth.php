@@ -19,7 +19,7 @@ class UserAuth
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="Application\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Application\Entity\User", inversedBy="auth")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $user;
