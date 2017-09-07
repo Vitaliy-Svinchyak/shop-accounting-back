@@ -39,7 +39,21 @@ return [
                         'controller' => Controller\ShopController::class
                     ],
                 ],
-            ]
+            ],
+            'shop_dynamic' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/shop/:id/stocks',
+                    'constraints' => [
+                        'id' => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\ShopController::class,
+                        'action' => 'getShopStocks'
+                    ],
+                ],
+            ],
+
         ],
     ],
     'controllers' => [

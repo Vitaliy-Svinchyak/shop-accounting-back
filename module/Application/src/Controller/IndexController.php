@@ -2,6 +2,8 @@
 
 namespace Application\Controller;
 
+use Application\Entity\Shop;
+use Application\Entity\Stock;
 use Application\Entity\User;
 use Application\Entity\UserAuth;
 use Application\Service\AuthManager;
@@ -23,22 +25,12 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
-//        $user = $this->serviceLocator
-//            ->get(AuthManager::class)
-//            ->getUser();
-        /** @var User $user */
-        $user = $this->em->getRepository(User::class)->find(1);
-//        $auth = $user->getAuth()->first();
+
+        $shop = $this->em->getRepository(Shop::class)->find(2);
         echo '<pre>';
-        print_r($user->getShops()->count());
-//        print_r($user);
+        print_r($shop->getStocks());
         exit;
 
-//        /** @var UserAuth $userauth */
-//        $userauth = $this->em->getRepository(UserAuth::class)->find(1);
-//        echo '<pre>';
-//        print_r($userauth->getUser()->getId());
-//        exit;
 
         return new ViewModel();
     }

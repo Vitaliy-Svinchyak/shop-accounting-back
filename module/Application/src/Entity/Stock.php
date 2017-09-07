@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Application\Repository\StockRepository")
  * @ORM\Table(name="stock")
  */
-class Stock
+class Stock implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -32,7 +32,7 @@ class Stock
 
     /**
      * @var User[]
-     * @ORM\ManyToOne(targetEntity="Application\Entity\Shop")
+     * @ORM\ManyToOne(targetEntity="Application\Entity\Shop", inversedBy="stocks")
      * @ORM\JoinColumn(name="shop_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $shop;
@@ -123,4 +123,8 @@ class Stock
         $this->products = $products;
     }
 
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
 }

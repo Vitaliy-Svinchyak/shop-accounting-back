@@ -56,7 +56,7 @@ class AuthManager
      */
     public function authorizeByToken(string $token): bool
     {
-        $userAuthRepo= $this->entityManager->getRepository(UserAuth::class);
+        $userAuthRepo = $this->entityManager->getRepository(UserAuth::class);
 
         /** @var UserAuth $userAuth */
         $userAuth = $userAuthRepo->findOneBy(['hash' => $token]);

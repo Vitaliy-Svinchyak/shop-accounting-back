@@ -3,6 +3,7 @@
 namespace Application\Controller;
 
 use Application\Service\ShopService;
+use Zend\Http\Request;
 
 class ShopController extends ProjectRestfulController
 {
@@ -20,6 +21,17 @@ class ShopController extends ProjectRestfulController
         /** @var ShopService $service */
         $service = $this->getServiceLocator()->get(ShopService::class);
         $result = $service->getShopsByOfCurrentUser();
+
+        return $this->successResponse($result);
+    }
+
+    public function getShopStocksAction()
+    {
+        /** @var Request $request */
+        $shopId = $this->params()->fromRoute('id');
+        /** @var ShopService $service */
+        $service = $this->getServiceLocator()->get(ShopService::class);
+        $result = $service->getShopStocks((int)$shopId);
 
         return $this->successResponse($result);
     }

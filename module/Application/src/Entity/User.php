@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * uniqueConstraints={@ORM\UniqueConstraint(name="user_email", columns={"email"})}
  * )
  */
-class User
+class User implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -195,6 +195,11 @@ class User
     private function initDefaultParams()
     {
         $this->shops = new ArrayCollection();
+    }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 
 }

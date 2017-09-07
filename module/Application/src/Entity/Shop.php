@@ -48,6 +48,12 @@ class Shop implements JsonSerializable
      */
     private $users;
 
+    /**
+     * @var Stock[]
+     * @ORM\OneToMany(targetEntity="Application\Entity\Stock", mappedBy="shop")
+     */
+    private $stocks;
+
     public function __construct()
     {
         $this->initDefaultParams();
@@ -102,7 +108,7 @@ class Shop implements JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return Collection
      */
     public function getUsers()
     {
@@ -154,6 +160,23 @@ class Shop implements JsonSerializable
     private function initDefaultParams()
     {
         $this->users = new ArrayCollection();
+        $this->stocks = new ArrayCollection();
+    }
+
+    /**
+     * @return Stock[]
+     */
+    public function getStocks()
+    {
+        return $this->stocks;
+    }
+
+    /**
+     * @param Stock[] $stocks
+     */
+    public function setStocks($stocks)
+    {
+        $this->stocks = $stocks;
     }
 
 

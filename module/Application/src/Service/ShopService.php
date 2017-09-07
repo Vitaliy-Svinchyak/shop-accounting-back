@@ -22,6 +22,18 @@ class ShopService
         $this->serviceLocator = $serviceLocator;
     }
 
+    /**
+     * @param array $data
+     *
+     * @return bool
+     *
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\ORMInvalidArgumentException
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \Zend\Form\Exception\DomainException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Zend\Form\Exception\InvalidArgumentException
+     */
     public function createShop(array $data): bool
     {
         $form = new ShopForm();
@@ -59,6 +71,22 @@ class ShopService
             ->getUser();
 
         return $user->getShops()->toArray();
+    }
+
+    public function getShopStocks(int $shopId)
+    {
+        $shopRepo = $this->getEntityManager()->getRepository(Shop::class);
+        /** @var Shop $shop */
+        $shop = $shopRepo->find($shopId);
+        $user = $this->getServiceLocator()
+            ->get(AuthManager::class)
+            ->getUser();
+
+        if (!$shop || !$shop->getUsers()->contains($user)) {
+            return [];
+        }
+
+        return $shop->getStocks()->toArray();
     }
 
     /**
