@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class User implements \JsonSerializable
 {
+    use BaseEntity;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -195,11 +196,6 @@ class User implements \JsonSerializable
     private function initDefaultParams()
     {
         $this->shops = new ArrayCollection();
-    }
-
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 
 }

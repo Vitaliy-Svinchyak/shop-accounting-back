@@ -40,7 +40,20 @@ return [
                     ],
                 ],
             ],
-            'shop_dynamic' => [
+            'shop_stocks' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/stock/:id/products',
+                    'constraints' => [
+                        'id' => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\StockController::class,
+                        'action' => 'getProducts'
+                    ],
+                ],
+            ],
+            'stock_products' => [
                 'type' => Segment::class,
                 'options' => [
                     'route' => '/shop/:id/stocks',
@@ -61,6 +74,7 @@ return [
             Controller\IndexController::class => Factory\IndexControllerFactory::class,
             Controller\AuthController::class => ReflectionBasedAbstractFactory::class,
             Controller\ShopController::class => ServiceManagerControllerFactory::class,
+            Controller\StockController::class => ServiceManagerControllerFactory::class,
         ],
     ],
     'view_manager' => [

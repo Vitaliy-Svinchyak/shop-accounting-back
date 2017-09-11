@@ -4,6 +4,7 @@ use Application\Factory\AuthenticationServiceFactory;
 use Application\Factory\ServiceManagerControllerFactory;
 use Application\Middleware\AuthMiddleware;
 use Application\Service\ShopService;
+use Application\Service\StockService;
 use Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
@@ -14,6 +15,7 @@ return [
         \Zend\Authentication\AuthenticationService::class => AuthenticationServiceFactory::class,
         \Application\Service\AuthManager::class => ReflectionBasedAbstractFactory::class,
         ShopService::class => ServiceManagerControllerFactory::class,
+        StockService::class => ServiceManagerControllerFactory::class,
         AuthMiddleware::class => InvokableFactory::class
     ],
 ];

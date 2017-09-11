@@ -8,8 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Application\Repository\StockRepository")
  * @ORM\Table(name="product_to_stock")
  */
-class ProductToStock
+class ProductToStock implements \JsonSerializable
 {
+
+    use BaseEntity;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -38,7 +40,7 @@ class ProductToStock
 
     /**
      * @var Stock
-     * @ORM\ManyToOne(targetEntity="Application\Entity\Stock")
+     * @ORM\ManyToOne(targetEntity="Application\Entity\Stock", inversedBy="productsToStock")
      * @ORM\JoinColumn(name="stock_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $stock;
@@ -110,7 +112,7 @@ class ProductToStock
     /**
      * @return Stock
      */
-    public function getStock(): Stock
+    public function getStock()
     {
         return $this->stock;
     }
@@ -118,7 +120,7 @@ class ProductToStock
     /**
      * @param Stock $stock
      */
-    public function setStock(Stock $stock)
+    public function setStock($stock)
     {
         $this->stock = $stock;
     }

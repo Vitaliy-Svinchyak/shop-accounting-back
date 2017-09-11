@@ -2,14 +2,17 @@
 
 namespace Application\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\ProductRepository")
  * @ORM\Table(name="product")
  */
-class Product
+class Product implements \JsonSerializable
 {
+
+    use BaseEntity;
     /**
      * @var int
      * @ORM\Id
@@ -23,6 +26,12 @@ class Product
      * @ORM\Column(name="name", type="string", nullable=false)
      */
     private $name;
+
+    /**
+     * @var string
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
 
     /**
      * @var string
@@ -60,6 +69,11 @@ class Product
      * @ORM\OneToMany(targetEntity="Application\Entity\ProductToStock", mappedBy="id")
      */
     private $productsToStock;
+
+    public function __construct()
+    {
+        $this->initDefaultParams();
+    }
 
     /**
      * @return mixed
@@ -176,7 +190,7 @@ class Product
     /**
      * @return ProductToStock[]
      */
-    public function getProductsToStock(): array
+    public function getProductsToStock()
     {
         return $this->productsToStock;
     }
@@ -184,8 +198,29 @@ class Product
     /**
      * @param ProductToStock[] $productsToStock
      */
-    public function setProductsToStock(array $productsToStock)
+    public function setProductsToStock($productsToStock)
     {
         $this->productsToStock = $productsToStock;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description)
+    {
+        $this->description = $description;
+    }
+
+    private function initDefaultParams()
+    {
+        $this->productsToStock = new ArrayCollection();
     }
 }

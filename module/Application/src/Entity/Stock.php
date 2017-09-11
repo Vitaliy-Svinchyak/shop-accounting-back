@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Stock implements \JsonSerializable
 {
+    use BaseEntity;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -39,7 +40,7 @@ class Stock implements \JsonSerializable
 
     /**
      * @var ProductToStock[]
-     * @ORM\OneToMany(targetEntity="Application\Entity\ProductToStock", mappedBy="id")
+     * @ORM\OneToMany(targetEntity="Application\Entity\ProductToStock", mappedBy="stock")
      */
     private $productsToStock;
 
@@ -123,8 +124,19 @@ class Stock implements \JsonSerializable
         $this->products = $products;
     }
 
-    public function jsonSerialize()
+    /**
+     * @return ProductToStock[]
+     */
+    public function getProductsToStock()
     {
-        return get_object_vars($this);
+        return $this->productsToStock;
+    }
+
+    /**
+     * @param ProductToStock[] $productsToStock
+     */
+    public function setProductsToStock( $productsToStock)
+    {
+        $this->productsToStock = $productsToStock;
     }
 }
